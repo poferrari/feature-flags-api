@@ -94,10 +94,13 @@ namespace ProjectWeather.Api
                 paramsValidation.ClockSkew = TimeSpan.Zero;
             });
 
+
+            using var serviceScope = services.BuildServiceProvider().CreateScope();
+            var featureManager = serviceScope.ServiceProvider.GetRequiredService<IFeatureManager>();
+
             services.AddControllers(options =>
             {
-                options.Conventions.Add(new ControllerFeatureFlagsConvention());
-                options.Conventions.Add(new ActionFeatureFlagsConvention());
+                options.Conventions.Add(new ActionFeatureFlagsConvention(featureManager));
             });
 
             services.AddSwaggerGen(c =>
