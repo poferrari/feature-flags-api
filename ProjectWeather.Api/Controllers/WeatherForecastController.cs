@@ -8,7 +8,7 @@ using System.Linq;
 namespace ProjectWeather.Api.Controllers
 {
     //[Authorize]
-    [FeatureGate(FeatureFlagsConst.Beta)] // Beta feature flag must be enabled
+    [FeatureGate(FeatureFlagsConst.WeatherForecast)] // Beta feature flag must be enabled
     [ApiController]
     [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -20,12 +20,14 @@ namespace ProjectWeather.Api.Controllers
             _logger = logger;
         }
 
+        [FeatureGate(FeatureFlagsConst.WeatherForecastGet)]
         [HttpGet]
         public IActionResult Get()
         {
             return Ok(Startup.WeatherForecasts);
         }
 
+        [FeatureGate(FeatureFlagsConst.WeatherForecastPost)]
         [HttpPost]
         public IActionResult Post(WeatherForecast weatherForecast)
         {
@@ -36,6 +38,7 @@ namespace ProjectWeather.Api.Controllers
             return Created(nameof(Post), weatherForecast);
         }
 
+        [FeatureGate(FeatureFlagsConst.WeatherForecastGetById)]
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {

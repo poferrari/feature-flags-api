@@ -94,18 +94,22 @@ namespace ProjectWeather.Api
                 paramsValidation.ClockSkew = TimeSpan.Zero;
             });
 
+            AddControllersFeatureFlags(services);
 
-            using var serviceScope = services.BuildServiceProvider().CreateScope();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjectWeather.Api", Version = "v1" });
+            });
+        }
+
+        private static void AddControllersFeatureFlags(IServiceCollection services)
+        {
+            using var serviceScope = services.BuildServiceProvider(false).CreateScope();
             var featureManager = serviceScope.ServiceProvider.GetRequiredService<IFeatureManager>();
 
             services.AddControllers(options =>
             {
                 options.Conventions.Add(new ActionFeatureFlagsConvention(featureManager));
-            });
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjectWeather.Api", Version = "v1" });
             });
         }
 

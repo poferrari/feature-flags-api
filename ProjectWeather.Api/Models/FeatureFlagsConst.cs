@@ -2,6 +2,10 @@
 {
     public static class FeatureFlagsConst
     {
-        public const string Beta = "Beta";
+        public const string WeatherForecast = "WeatherForecast";
+        public const string WeatherForecastPost = "WeatherForecastPost";
+        public const string WeatherForecastGet = "WeatherForecastGet";
+        public const string WeatherForecastGetById = "WeatherForecastGetById";
+
     }
 }
