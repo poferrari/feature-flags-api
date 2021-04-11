@@ -4,11 +4,11 @@ using Microsoft.FeatureManagement.Mvc;
 using ProjectWeather.Api.Models;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace ProjectWeather.Api.Controllers
 {
-    //[Authorize]
-    [FeatureGate(FeatureFlagsConst.WeatherForecast)] // Beta feature flag must be enabled
+    //[Authorize]    
     [ApiController]
     [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -42,6 +42,16 @@ namespace ProjectWeather.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
+            var weatherForecast = Startup.WeatherForecasts.FirstOrDefault(t => t.Id == id);
+            return Ok(weatherForecast);
+        }
+
+        [FeatureGate(FeatureFlagsConst.WeatherForecastGetByIdTest)]
+        [HttpGet("test/{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            Thread.Sleep(1000);
+
             var weatherForecast = Startup.WeatherForecasts.FirstOrDefault(t => t.Id == id);
             return Ok(weatherForecast);
         }

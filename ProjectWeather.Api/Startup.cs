@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.FeatureManagement;
+using Microsoft.FeatureManagement.FeatureFilters;
 using Microsoft.OpenApi.Models;
 using ProjectWeather.Api.Conventions;
 using ProjectWeather.Api.Models;
@@ -48,7 +49,9 @@ namespace ProjectWeather.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // Ativa recurso de Feature Flags
-            services.AddFeatureManagement();
+            services.AddFeatureManagement()
+                .AddFeatureFilter<TimeWindowFilter>() // rota de promoção
+                .AddFeatureFilter<PercentageFilter>(); // rota para porcetagem de solicitações
 
             var signingConfigurations = new SigningConfigurations();
             services.AddSingleton(signingConfigurations);
